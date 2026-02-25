@@ -1,13 +1,14 @@
-﻿using System;
+﻿using carShop.DAL;
+using carShop.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using carShop.DAL;
-using carShop.Models;
 
 namespace carShop.Controllers
 {
@@ -45,14 +46,22 @@ namespace carShop.Controllers
         }
 
         // POST: Cars/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Description,Price,CategoryID")] Car car)
+        public ActionResult Create([Bind(Include = "ID,Name,Description,Price,CategoryID")] Car car, HttpPostedFileBase ImageFile)
         {
             if (ModelState.IsValid)
             {
+                //image
+                if (ImageFile != null && ImageFile.ContentLength > 0)
+                {
+                    string fileName = Guid.NewGuid() + Path.GetExtension(ImageFile.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+
+                    ImageFile.SaveAs(path);
+                    car.ImagePath = fileName;
+                }
+
                 db.Cars.Add(car);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -79,15 +88,40 @@ namespace carShop.Controllers
         }
 
         // POST: Cars/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Description,Price,CategoryID")] Car car)
+        public ActionResult Edit([Bind(Include = "ID,Name,Description,Price,CategoryID")] Car car, HttpPostedFileBase ImageFile)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(car).State = EntityState.Modified;
+                var carInDb = db.Cars.Find(car.ID);
+
+                if (carInDb == null)
+                    return HttpNotFound();
+
+                //image
+                carInDb.Name = car.Name;
+                carInDb.Description = car.Description;
+                carInDb.Price = car.Price;
+                carInDb.CategoryID = car.CategoryID;
+                if (ImageFile != null && ImageFile.ContentLength > 0)
+                {
+                    // Delete old image
+                    if (!string.IsNullOrEmpty(carInDb.ImagePath))
+                    {
+                        string oldPath = Path.Combine(Server.MapPath("~/Images/"), carInDb.ImagePath);
+                        if (System.IO.File.Exists(oldPath))
+                            System.IO.File.Delete(oldPath);
+                    }
+
+                    // Save new image
+                    string fileName = Guid.NewGuid() + Path.GetExtension(ImageFile.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+
+                    ImageFile.SaveAs(path);
+                    carInDb.ImagePath = fileName;
+                }
+                //db.Entry(car).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -116,6 +150,13 @@ namespace carShop.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Car car = db.Cars.Find(id);
+            //image
+            if (!string.IsNullOrEmpty(car.ImagePath))
+            {
+                string path = Path.Combine(Server.MapPath("~/Images/"), car.ImagePath);
+                if (System.IO.File.Exists(path))
+                    System.IO.File.Delete(path);
+            }
             db.Cars.Remove(car);
             db.SaveChanges();
             return RedirectToAction("Index");

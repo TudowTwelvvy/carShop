@@ -1,51 +1,66 @@
 ﻿@model IEnumerable<carShop.Models.Car>
+@using System.Globalization
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Cars";
 }
 
-<h2>Index</h2>
+<h2>Cars</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New Car", "Create", null, new { @class = "btn btn-success" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Category.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Category</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <!-- IMAGE -->
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImagePath))
+                    {
+                        <img src="~/Images/@item.ImagePath"
+                             width="100" height="70"
+                             class="img-thumbnail" />
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
 
+                <!-- CATEGORY -->
+                <td>
+                    @(item.Category != null ? item.Category.Name : "No Category")
+                </td>
+
+                <!-- NAME -->
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+
+                <!-- DESCRIPTION -->
+                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+
+                <!-- PRICE -->
+                <td>@String.Format(new System.Globalization.CultureInfo("en-ZA"), "{0:C}", item.Price)</td>
+
+                <!-- ACTIONS -->
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }, new { @class = "btn btn-primary btn-sm" }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }, new { @class = "btn btn-info btn-sm" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new { @class = "btn btn-danger btn-sm" })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>

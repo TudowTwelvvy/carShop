@@ -14,6 +14,8 @@ namespace carShop.Models
         public decimal Price { get; set; }
         public int? CategoryID { get; set; } //Represents the ID of the category that the product is assigned to: FOREIGN KEY-CODE
         public virtual Category Category { get; set; }
+        // Image Property
+        public string ImagePath { get; set; }
 
     }
 }

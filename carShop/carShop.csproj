@@ -135,6 +135,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202602250923057_InitialCreate.cs" />
+    <Compile Include="Migrations\202602250923057_InitialCreate.Designer.cs">
+      <DependentUpon>202602250923057_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202602251640336_AddImagePropertyToCar.cs" />
+    <Compile Include="Migrations\202602251640336_AddImagePropertyToCar.Designer.cs">
+      <DependentUpon>202602251640336_AddImagePropertyToCar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\CarMetaData.cs" />
     <Compile Include="Models\Category.cs" />
@@ -204,6 +213,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -231,6 +241,14 @@
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\jquery-3.7.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.0.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202602250923057_InitialCreate.resx">
+      <DependentUpon>202602250923057_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202602251640336_AddImagePropertyToCar.resx">
+      <DependentUpon>202602251640336_AddImagePropertyToCar.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
