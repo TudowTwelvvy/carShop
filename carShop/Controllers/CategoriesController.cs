@@ -18,7 +18,7 @@ namespace carShop.Controllers
         // GET: Categories
         public ActionResult Index()
         {
-            return View(db.Categories.ToList());
+            return View(db.Categories.OrderBy(c=>c.Name).ToList());
         }
 
         // GET: Categories/Details/5
@@ -43,8 +43,7 @@ namespace carShop.Controllers
         }
 
         // POST: Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Name")] Category category)
@@ -75,8 +74,6 @@ namespace carShop.Controllers
         }
 
         // POST: Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Name")] Category category)
