@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
 namespace carShop.Models
 {
-    public class Car
+    public partial class Car
     {
         public int ID { get; set; }  //USED FOR PRIMARY KEY-CODE
         public string Name { get; set; }
