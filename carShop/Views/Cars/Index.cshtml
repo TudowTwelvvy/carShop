@@ -9,7 +9,18 @@
 
 <p>
     @Html.ActionLink("Create New Car", "Create", null, new { @class = "btn btn-success" })
+    <!--filter by category-->
+    @using (Html.BeginForm("Index", "Cars", FormMethod.Get, new { @class = "d-flex" }))
+    {
+        <label>Filter by category:</label>
+        @Html.DropDownList("Category", "All")
+        <input type="submit" value="Filter" />
+        <input type="hidden" name="Search" id="Search" value="@ViewBag.Search"/>
+    }
 </p>
+
+
+
 
 <table class="table table-striped table-bordered">
     <thead>

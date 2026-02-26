@@ -17,12 +17,30 @@
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
+
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Shop by Category", "Index", "Categories", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("View all our Cars", "Index", "Cars", new { area = "" }, new { @class = "nav-link" })</li>
+
                 </ul>
+
+                <!--search form-->
+                @using (Html.BeginForm("Index", "Cars", FormMethod.Get, new { @class = "d-flex" }))
+                {
+                    <input type="text"
+                           name="search"
+                           class="form-control me-2"
+                           placeholder="Search..."
+                           aria-label="Search" />
+
+                    <button class="btn btn-outline-light" type="submit">
+                        Search
+                    </button>
+                }
+
+                <!--Register AND Login-->
+                
+
             </div>
         </div>
     </nav>

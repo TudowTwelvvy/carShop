@@ -17,7 +17,7 @@ namespace carShop.Controllers
         private ShopContext db = new ShopContext();
 
         // GET: Cars
-        public ActionResult Index(string category)
+        public ActionResult Index(string category, string search)
         {
             var cars = db.Cars.Include(c => c.Category);
 
@@ -26,6 +26,23 @@ namespace carShop.Controllers
             {
                 cars = cars.Where(c => c.Category.Name == category);
             }
+
+            //search cars by name or description
+            if(!String.IsNullOrEmpty(search))
+            {
+                cars = cars.Where(c => c.Name.Contains(search) || 
+                c.Description.Contains(search) || 
+                c.Category.Name.Contains(search));
+                ViewBag.Search = search;
+            }
+
+            if(!String.IsNullOrEmpty(category))
+            {
+                cars = cars.Where(c => c.Category.Name == category);
+            }
+
+            var categories = cars.OrderBy(c => c.Category.Name).Select(c => c.Category.Name).Distinct();
+            ViewBag.Category = new SelectList(categories);
 
             return View(cars.ToList());
         }
