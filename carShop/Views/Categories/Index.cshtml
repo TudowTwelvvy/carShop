@@ -24,8 +24,7 @@
 
 
                 <!-- NAME -->
-                <td style="white-space:nowrap;">@Html.DisplayFor(modelItem => item.Name)</td>
-
+                <td style="white-space:nowrap;">@Html.ActionLink(item.Name, "Index", "Cars", new { category = item.Name }, null)</td>
                 <!-- ACTIONS -->
                 <td style="white-space:nowrap;">
                     @Html.ActionLink("Edit", "Edit", new { id = item.ID }, new { @class = "btn btn-primary btn-sm" }) |

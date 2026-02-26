@@ -17,9 +17,16 @@ namespace carShop.Controllers
         private ShopContext db = new ShopContext();
 
         // GET: Cars
-        public ActionResult Index()
+        public ActionResult Index(string category)
         {
             var cars = db.Cars.Include(c => c.Category);
+
+            //filter by category
+            if(!String.IsNullOrEmpty(category))
+            {
+                cars = cars.Where(c => c.Category.Name == category);
+            }
+
             return View(cars.ToList());
         }
 
