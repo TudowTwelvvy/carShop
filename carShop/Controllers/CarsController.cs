@@ -1,5 +1,6 @@
 ﻿using carShop.DAL;
 using carShop.Models;
+using carShop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -19,6 +20,8 @@ namespace carShop.Controllers
         // GET: Cars
         public ActionResult Index(string category, string search)
         {
+            CarIndexViewModel viewModel = new CarIndexViewModel();
+
             var cars = db.Cars.Include(c => c.Category);
 
             //filter by category
@@ -33,18 +36,29 @@ namespace carShop.Controllers
                 cars = cars.Where(c => c.Name.Contains(search) || 
                 c.Description.Contains(search) || 
                 c.Category.Name.Contains(search));
-                ViewBag.Search = search;
+                viewModel.Search = search;
             }
+            //group search results into categories and count how many items in each category
+            viewModel.CatsWithCount = from matchingCars in cars
+                                       where
+                                       matchingCars.CategoryID != null
+                                       group matchingCars by matchingCars.Category.Name into catGroup
+                                        select new CategoryWithCount
+                                        {
+                                             CategoryName = catGroup.Key,
+                                             CarCount = catGroup.Count()
+                                        };
 
-            if(!String.IsNullOrEmpty(category))
+            if (!String.IsNullOrEmpty(category))
             {
                 cars = cars.Where(c => c.Category.Name == category);
             }
 
-            var categories = cars.OrderBy(c => c.Category.Name).Select(c => c.Category.Name).Distinct();
-            ViewBag.Category = new SelectList(categories);
+            //var categories = cars.OrderBy(c => c.Category.Name).Select(c => c.Category.Name).Distinct();
+            //ViewBag.Category = new SelectList(categories);
+            viewModel.Cars = cars;
 
-            return View(cars.ToList());
+            return View(viewModel);
         }
 
         // GET: Cars/Details/5

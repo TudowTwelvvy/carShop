@@ -1,11 +1,11 @@
-﻿@model IEnumerable<carShop.Models.Car>
+﻿@model carShop.ViewModels.CarIndexViewModel
 @using System.Globalization
 
 @{
     ViewBag.Title = "Cars";
 }
 
-<h2>Cars</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
     @Html.ActionLink("Create New Car", "Create", null, new { @class = "btn btn-success" })
@@ -13,9 +13,9 @@
     @using (Html.BeginForm("Index", "Cars", FormMethod.Get, new { @class = "d-flex" }))
     {
         <label>Filter by category:</label>
-        @Html.DropDownList("Category", "All")
+        @Html.DropDownListFor(vm=> vm.Category,Model.CatFilterItems, "All")
         <input type="submit" value="Filter" />
-        <input type="hidden" name="Search" id="Search" value="@ViewBag.Search"/>
+        <input type="hidden" name="Search" id="Search" value="@Model.Search"/>
     }
 </p>
 
@@ -34,7 +34,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Cars)
         {
             <tr>
                 <!-- IMAGE -->
