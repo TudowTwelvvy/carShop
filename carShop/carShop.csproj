@@ -143,6 +143,18 @@
     <Compile Include="Migrations\202602251640336_AddImagePropertyToCar.Designer.cs">
       <DependentUpon>202602251640336_AddImagePropertyToCar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202602271029107_InitialDatabase.cs" />
+    <Compile Include="Migrations\202602271029107_InitialDatabase.Designer.cs">
+      <DependentUpon>202602271029107_InitialDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202603020726007_CategoryNameValidation.cs" />
+    <Compile Include="Migrations\202603020726007_CategoryNameValidation.Designer.cs">
+      <DependentUpon>202603020726007_CategoryNameValidation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202603020732169_CategoryNameValidation1.cs" />
+    <Compile Include="Migrations\202603020732169_CategoryNameValidation1.Designer.cs">
+      <DependentUpon>202603020732169_CategoryNameValidation1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\CarMetaData.cs" />
@@ -249,6 +261,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202602251640336_AddImagePropertyToCar.resx">
       <DependentUpon>202602251640336_AddImagePropertyToCar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202602271029107_InitialDatabase.resx">
+      <DependentUpon>202602271029107_InitialDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202603020726007_CategoryNameValidation.resx">
+      <DependentUpon>202603020726007_CategoryNameValidation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202603020732169_CategoryNameValidation1.resx">
+      <DependentUpon>202603020732169_CategoryNameValidation1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

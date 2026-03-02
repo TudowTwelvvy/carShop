@@ -22,7 +22,7 @@ namespace carShop.DAL
             context.SaveChanges();
            /* var cars = new List<Models.Car>
             {
-                new Models.Car{Make="BMW", Model="M3", Year=2018, Price=60000, CategoryID=1},
+                new Models.Car{Nmae="BMW", Model="M3", Year=2018, Price=60000, CategoryID=1},
                 new Models.Car{Make="Audi", Model="Q5", Year=2019, Price=45000, CategoryID=2},
                 new Models.Car{Make="Mercedes", Model="C-Class", Year=2020, Price=55000, CategoryID=3},
                 new Models.Car{Make="Volkswagen", Model="Golf", Year=2017, Price=20000, CategoryID=4}

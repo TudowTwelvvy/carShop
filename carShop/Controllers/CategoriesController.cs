@@ -108,6 +108,10 @@ namespace carShop.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Category category = db.Categories.Find(id);
+            foreach (var car in category.Cars)
+            {
+                car.CategoryID = null;
+            }
             db.Categories.Remove(category);
             db.SaveChanges();
             return RedirectToAction("Index");
