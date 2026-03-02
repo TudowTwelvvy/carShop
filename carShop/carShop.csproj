@@ -155,6 +155,10 @@
     <Compile Include="Migrations\202603020732169_CategoryNameValidation1.Designer.cs">
       <DependentUpon>202603020732169_CategoryNameValidation1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202603020752032_ProductValidation.cs" />
+    <Compile Include="Migrations\202603020752032_ProductValidation.Designer.cs">
+      <DependentUpon>202603020752032_ProductValidation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\CarMetaData.cs" />
@@ -270,6 +274,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202603020732169_CategoryNameValidation1.resx">
       <DependentUpon>202603020732169_CategoryNameValidation1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202603020752032_ProductValidation.resx">
+      <DependentUpon>202603020752032_ProductValidation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
