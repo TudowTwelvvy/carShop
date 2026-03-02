@@ -1,4 +1,5 @@
 ﻿using carShop.Models;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace carShop.ViewModels
 {
     public class CarIndexViewModel
     {
-        public IQueryable<Car> Cars { get; set; }
+        public IPagedList<Car>Cars { get; set; }
+      //public IQueryable<Car> Cars { get; set; }
         public string Search { get; set; }
         public IEnumerable<CategoryWithCount> CatsWithCount { get; set; }
         public string Category { get; set; }

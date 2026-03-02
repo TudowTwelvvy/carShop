@@ -1,6 +1,7 @@
 ﻿using carShop.DAL;
 using carShop.Models;
 using carShop.ViewModels;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -18,7 +19,7 @@ namespace carShop.Controllers
         private ShopContext db = new ShopContext();
 
         // GET: Cars
-        public ActionResult Index(string category, string search, string sortBy)
+        public ActionResult Index(string category, string search, string sortBy,int? page)
         {
             CarIndexViewModel viewModel = new CarIndexViewModel();
 
@@ -52,6 +53,7 @@ namespace carShop.Controllers
             if (!String.IsNullOrEmpty(category))
             {
                 cars = cars.Where(c => c.Category.Name == category);
+                viewModel.Category = category;
             }
             //sort the results
             switch (sortBy) {
@@ -62,12 +64,18 @@ namespace carShop.Controllers
                     cars = cars.OrderByDescending(c => c.Price);
                     break;
                 default:
+                    cars = cars.OrderBy(c => c.Name);
                     break;
             }
 
+            const int pageItems = 5; //cars per page
+            int currentPage = (page ?? 1); //default page = 1
+            viewModel.Cars = cars.ToPagedList(currentPage, pageItems);
+            viewModel.SortBy = sortBy;
+
             //var categories = cars.OrderBy(c => c.Category.Name).Select(c => c.Category.Name).Distinct();
             //ViewBag.Category = new SelectList(categories);
-            viewModel.Cars = cars;
+           //viewModel.Cars = cars
             viewModel.SortOptions = new Dictionary<string, string>
             {
                 {"Price: Low to High", "price_lowest" },

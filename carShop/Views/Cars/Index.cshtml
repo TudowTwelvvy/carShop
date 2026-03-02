@@ -1,4 +1,5 @@
 ﻿@model carShop.ViewModels.CarIndexViewModel
+@using PagedList.Mvc;
 @using System.Globalization
 
 @{
@@ -6,6 +7,10 @@
 }
 
 <h2>@ViewBag.Title</h2>
+<p>
+    @(String.IsNullOrEmpty(Model.Search) ? "All": $"Search results for '{Model.Search}'")
+    @Model.Cars.TotalItemCount cars found.
+</p>
 
 <p>
     @Html.ActionLink("Create New Car", "Create", null, new { @class = "btn btn-success" })
@@ -15,7 +20,7 @@
         <label>Filter by category:</label>
         @Html.DropDownListFor(vm => vm.Category, Model.CatFilterItems, "All")
         <label>Sort by price:</label>
-        @Html.DropDownListFor(vm => vm.SortBy, new SelectList(Model.SortOptions, "Value", "Key"),"Default")
+        @Html.DropDownListFor(vm => vm.SortBy, new SelectList(Model.SortOptions, "Value", "Key"), "Default")
         <input type="submit" value="Filter" />
         <input type="hidden" name="Search" id="Search" value="@Model.Search" />
     }
@@ -77,3 +82,8 @@
         }
     </tbody>
 </table>
+
+<div>
+    Page @(Model.Cars.PageCount < Model.Cars.PageNumber ? 0 : Model.Cars.PageNumber) of @Model.Cars.PageCount
+    @Html.PagedListPager(Model.Cars, page => Url.Action("Index", new { category = Model.Category, sortBy = Model.SortBy, search = Model.Search, page }))
+</div>
