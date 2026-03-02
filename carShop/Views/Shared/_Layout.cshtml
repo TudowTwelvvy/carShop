@@ -20,7 +20,7 @@
 
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Shop by Category", "Index", "Categories", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("View all our Cars", "Index", "Cars", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.RouteLink("View all our Cars", "CarsIndex", new { area = "" }, new { @class = "nav-link" })</li>
 
                 </ul>
 
