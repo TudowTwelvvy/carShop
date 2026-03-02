@@ -18,7 +18,7 @@ namespace carShop.Controllers
         private ShopContext db = new ShopContext();
 
         // GET: Cars
-        public ActionResult Index(string category, string search)
+        public ActionResult Index(string category, string search, string sortBy)
         {
             CarIndexViewModel viewModel = new CarIndexViewModel();
 
@@ -53,10 +53,26 @@ namespace carShop.Controllers
             {
                 cars = cars.Where(c => c.Category.Name == category);
             }
+            //sort the results
+            switch (sortBy) {
+                case "price_lowest":
+                    cars = cars.OrderBy(c => c.Price);
+                    break;
+                case "price_highest":
+                    cars = cars.OrderByDescending(c => c.Price);
+                    break;
+                default:
+                    break;
+            }
 
             //var categories = cars.OrderBy(c => c.Category.Name).Select(c => c.Category.Name).Distinct();
             //ViewBag.Category = new SelectList(categories);
             viewModel.Cars = cars;
+            viewModel.SortOptions = new Dictionary<string, string>
+            {
+                {"Price: Low to High", "price_lowest" },
+                {"Price: High to Low", "price_highest" }
+            };
 
             return View(viewModel);
         }

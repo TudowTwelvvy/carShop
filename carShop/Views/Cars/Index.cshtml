@@ -13,9 +13,11 @@
     @using (Html.BeginForm("Index", "Cars", FormMethod.Get, new { @class = "d-flex" }))
     {
         <label>Filter by category:</label>
-        @Html.DropDownListFor(vm=> vm.Category,Model.CatFilterItems, "All")
+        @Html.DropDownListFor(vm => vm.Category, Model.CatFilterItems, "All")
+        <label>Sort by price:</label>
+        @Html.DropDownListFor(vm => vm.SortBy, new SelectList(Model.SortOptions, "Value", "Key"),"Default")
         <input type="submit" value="Filter" />
-        <input type="hidden" name="Search" id="Search" value="@Model.Search"/>
+        <input type="hidden" name="Search" id="Search" value="@Model.Search" />
     }
 </p>
 

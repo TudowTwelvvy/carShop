@@ -13,6 +13,10 @@ namespace carShop.ViewModels
         public string Search { get; set; }
         public IEnumerable<CategoryWithCount> CatsWithCount { get; set; }
         public string Category { get; set; }
+        public string SortBy { get; set; }
+        public Dictionary<string, string> SortOptions { get; set; }
+    
+        
 
         public IEnumerable<SelectListItem> CatFilterItems
         {

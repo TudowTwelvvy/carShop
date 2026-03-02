@@ -1,4 +1,5 @@
 ﻿@model carShop.Models.Car
+@using System.Globalization
 
 @{
     ViewBag.Title = "Delete";
@@ -41,7 +42,7 @@
             @Html.DisplayNameFor(model => model.Price)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Price)
+            @String.Format(new System.Globalization.CultureInfo("en-ZA"), "{0:C}", Model.Price)
         </dd>
 
         <!-- IMAGE -->
