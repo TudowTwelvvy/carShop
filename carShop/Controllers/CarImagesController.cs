@@ -40,7 +40,7 @@ namespace carShop.Controllers
         }
 
         // GET: CarImages/Create
-        public ActionResult Create()
+        public ActionResult Upload()
         {
             return View();
         }
@@ -50,16 +50,38 @@ namespace carShop.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,FileName")] CarImage carImage)
+        public ActionResult Upload(HttpPostedFileBase file)
         {
+            //check the user has entered a file
+            if (file != null)
+            {
+                //check ifthe file is valid
+                if (ValidateFile(file)) {
+                    try {
+                        SaveFileToDisk(file);
+                    } catch (Exception ex) {
+                        ModelState.AddModelError("FileName", "An error occurred while saving the file: " + ex.Message);
+                        
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("FileName", "Invalid file. Please upload a valid image file (jpg, jpeg, png, gif) under 2MB.");
+                }
+            }
+            else
+            {
+                //if the user has not entered a file return an error message
+                ModelState.AddModelError("FileName", "Please select a file to upload.");
+            }
             if (ModelState.IsValid)
             {
-                db.CarImages.Add(carImage);
+                db.CarImages.Add(new CarImage { FileName = file.FileName });
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(carImage);
+            return View();
         }
 
         // GET: CarImages/Edit/5

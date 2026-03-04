@@ -254,7 +254,7 @@
     <Content Include="Views\Categories\Details.cshtml" />
     <Content Include="Views\Categories\Edit.cshtml" />
     <Content Include="Views\Categories\Index.cshtml" />
-    <Content Include="Views\CarImages\Create.cshtml" />
+    <Content Include="Views\CarImages\Upload.cshtml" />
     <Content Include="Views\CarImages\Delete.cshtml" />
     <Content Include="Views\CarImages\Details.cshtml" />
     <Content Include="Views\CarImages\Edit.cshtml" />
