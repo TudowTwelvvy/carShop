@@ -68,9 +68,9 @@ namespace carShop.Controllers
                     break;
             }
 
-            const int pageItems = 5; //cars per page
+            //const int pageItems = 5; //cars per page
             int currentPage = (page ?? 1); //default page = 1
-            viewModel.Cars = cars.ToPagedList(currentPage, pageItems);
+            viewModel.Cars = cars.ToPagedList(currentPage, Constants.PageItems);
             viewModel.SortBy = sortBy;
 
             //var categories = cars.OrderBy(c => c.Category.Name).Select(c => c.Category.Name).Distinct();
