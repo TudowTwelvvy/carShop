@@ -53,54 +53,155 @@ namespace carShop.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Upload(HttpPostedFileBase file)
+        public ActionResult Upload(HttpPostedFileBase[] files)
         {
+            bool allFilesValid = true;
+            string inValidFiles = "";
             //check the user has entered a file
-            if (file != null)
+            if (files[0] != null)
             {
-                //check ifthe file is valid
-                if (ValidateFile(file)) {
-                    try {
+                //if user has entered less than 10 files
+                if (files.Length <= 10)
+                {
+                    //check they are all valid files
+                    foreach (var file in files)
+                    {
+                        if (!ValidateFile(file))
+                        {
+                            allFilesValid = false;
+                            inValidFiles += ", " + file.FileName;
+                        }
+                    }
+                    //if they are all valid then try to save them to disk
+                    if (allFilesValid)
+                    {
+                        foreach (var file in files)
+                        {
+                            try
+                            {
+                                SaveFileToDisk(file);
+                            }
+                            catch (Exception ex)
+                            {
+                                ModelState.AddModelError("FileName", "An error occurred while saving the file: " + ex.Message);
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //else add an error message to the model state with the names of the invalid files
+                        ModelState.AddModelError("FileName", "The following files are invalid. Please upload valid image files (jpg, jpeg, png, gif) under 2MB. The invalid files are: " + inValidFiles.TrimStart(','));
+                    }
+                }
+                //the user has entered more than 10 files return an error message
+                else
+                {
+                    ModelState.AddModelError("FileName", "You can upload a maximum of 10 files at a time. Please select fewer files.");
+
+                }
+            }
+            else {
+                
+                //if the user has not entered a file return an error messAGE
+                ModelState.AddModelError("FileName", "Please select at least one file to upload.");
+
+            }
+            if (ModelState.IsValid)
+            {
+                bool duplicates = false;
+                bool otherErrors = false;
+                string duplicateFiles = "";
+
+                foreach (var file in files)
+                {
+                    //try and save each file
+                    var carToAdd = new CarImage { FileName = file.FileName };
+                    try
+                    {
+                        db.CarImages.Add(carToAdd);
+                        db.SaveChanges();
+                    }
+                    catch (DbUpdateException ex)
+                    {
+                        //if there is an exception check if it is a duplicate file name error
+                        SqlException innerException = ex.InnerException.InnerException as SqlException;
+                        if (ex.InnerException != null && innerException.Number == 2601)
+                        {
+                            duplicates = true;
+                            duplicateFiles += ", " + file.FileName;
+                        }
+                        else
+                        {
+                            otherErrors = true;
+
+                        }
+                    }
+                }
+                //add a list od duplicate files to thr error message
+                if (duplicates)
+                {
+                    ModelState.AddModelError("FileName", "All files upload except the files" + duplicateFiles + ", which already exist in the system." +
+                        " Please delete them and try again if you wish to re-add them");
+                    return View();
+                }
+                else if (otherErrors)
+                {
+                    ModelState.AddModelError("FileName", "An error occurred while saving the file information to the database. Please try again.");
+                    return View();
+
+                }
+                return RedirectToAction("Index");
+
+                /*  //check ifthe file is valid
+                    if (ValidateFile(file))
+                {
+                    try
+                    {
                         SaveFileToDisk(file);
-                    } catch (Exception ex) {
+                    }
+                    catch (Exception ex)
+                    {
                         ModelState.AddModelError("FileName", "An error occurred while saving the file: " + ex.Message);
-                        
+
                     }
                 }
                 else
                 {
+                    //if the user has not entered a file return an error message
                     ModelState.AddModelError("FileName", "Invalid file. Please upload a valid image file (jpg, jpeg, png, gif) under 2MB.");
                 }
-            }
-            else
-            {
-                //if the user has not entered a file return an error message
-                ModelState.AddModelError("FileName", "Please select a file to upload.");
-            }
-            if (ModelState.IsValid)
-            {
-                db.CarImages.Add(new CarImage { FileName = file.FileName });
-                try
-                {
-                    db.SaveChanges();
                 }
-                catch (DbUpdateException ex)
+                else
                 {
-                    SqlException innerException = ex.InnerException.InnerException as SqlException;
-                    if (ex.InnerException != null && innerException.Number == 2601)
-                    {
-                        ModelState.AddModelError("FileName", "A file with the same name already exists. Please choose a different file name.");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("FileName", "An error occurred while saving the file information to the database: " + ex.Message);
-                    }
-                    return View();
+                    //if the user has not entered a file return an error message
+                    ModelState.AddModelError("FileName", "Please select a file to upload.");
                 }
-                return RedirectToAction("Index");
-            }
+                if (ModelState.IsValid)
+                {
+                    db.CarImages.Add(new CarImage { FileName = file.FileName });
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbUpdateException ex)
+                    {
+                        SqlException innerException = ex.InnerException.InnerException as SqlException;
+                        if (ex.InnerException != null && innerException.Number == 2601)
+                        {
+                            ModelState.AddModelError("FileName", "A file with the same name already exists. Please choose a different file name.");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("FileName", "An error occurred while saving the file information to the database: " + ex.Message);
+                        }
+                        return View();
+                    }
+                    return RedirectToAction("Index");
+                }*/
 
-                return View();
+            }
+            return View();
         }
 
         // GET: CarImages/Edit/5
