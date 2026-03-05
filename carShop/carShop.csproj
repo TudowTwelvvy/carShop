@@ -184,6 +184,10 @@
     <Compile Include="Migrations\202603030802562_CarImages1.Designer.cs">
       <DependentUpon>202603030802562_CarImages1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202603050951105_UniqueFileName.cs" />
+    <Compile Include="Migrations\202603050951105_UniqueFileName.Designer.cs">
+      <DependentUpon>202603050951105_UniqueFileName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\CarImage.cs" />
@@ -262,8 +266,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="CarImages\Thumbnails\" />
+    <Folder Include="Content\CarImages\Thumbnails\" />
     <Folder Include="Images\" />
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -316,6 +321,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202603030802562_CarImages1.resx">
       <DependentUpon>202603030802562_CarImages1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202603050951105_UniqueFileName.resx">
+      <DependentUpon>202603050951105_UniqueFileName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

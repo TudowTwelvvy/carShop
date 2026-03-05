@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -77,11 +80,27 @@ namespace carShop.Controllers
             if (ModelState.IsValid)
             {
                 db.CarImages.Add(new CarImage { FileName = file.FileName });
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    SqlException innerException = ex.InnerException.InnerException as SqlException;
+                    if (ex.InnerException != null && innerException.Number == 2601)
+                    {
+                        ModelState.AddModelError("FileName", "A file with the same name already exists. Please choose a different file name.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("FileName", "An error occurred while saving the file information to the database: " + ex.Message);
+                    }
+                    return View();
+                }
                 return RedirectToAction("Index");
             }
 
-            return View();
+                return View();
         }
 
         // GET: CarImages/Edit/5
