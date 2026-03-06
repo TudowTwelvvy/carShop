@@ -1,17 +1,18 @@
-﻿using System;
+﻿using carShop.DAL;
+using carShop.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
-using carShop.DAL;
-using carShop.Models;
 
 namespace carShop.Controllers
 {
@@ -57,6 +58,7 @@ namespace carShop.Controllers
         {
             bool allFilesValid = true;
             string inValidFiles = "";
+            db.Database.Log = sql => Trace.WriteLine(sql);
             //check the user has entered a file
             if (files[0] != null)
             {
@@ -130,6 +132,8 @@ namespace carShop.Controllers
                         {
                             duplicates = true;
                             duplicateFiles += ", " + file.FileName;
+                            db.Entry(carToAdd).State = EntityState.Detached;
+
                         }
                         else
                         {
