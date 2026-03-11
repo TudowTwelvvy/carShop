@@ -16,5 +16,6 @@ namespace carShop.Models
         [Index(IsUnique =true)]
 
         public string FileName { get; set; }
+        public virtual ICollection<CarImageMapping> CarImageMappings { get; set; }
     }
 }

@@ -146,6 +146,7 @@
     <Compile Include="Controllers\CarImagesController.cs" />
     <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DAL\CarsInitializer.cs" />
     <Compile Include="DAL\ShopContext.cs" />
@@ -188,13 +189,19 @@
     <Compile Include="Migrations\202603050951105_UniqueFileName.Designer.cs">
       <DependentUpon>202603050951105_UniqueFileName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202603110811146_CreateCarImageMappings.cs" />
+    <Compile Include="Migrations\202603110811146_CreateCarImageMappings.Designer.cs">
+      <DependentUpon>202603110811146_CreateCarImageMappings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\CarImage.cs" />
+    <Compile Include="Models\CarImageMapping.cs" />
     <Compile Include="Models\CarMetaData.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CarIndexViewModel.cs" />
+    <Compile Include="ViewModels\CarViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -263,6 +270,7 @@
     <Content Include="Views\CarImages\Details.cshtml" />
     <Content Include="Views\CarImages\Edit.cshtml" />
     <Content Include="Views\CarImages\Index.cshtml" />
+    <Content Include="Views\Error\FileUploadLimitExceeded.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -324,6 +332,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202603050951105_UniqueFileName.resx">
       <DependentUpon>202603050951105_UniqueFileName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202603110811146_CreateCarImageMappings.resx">
+      <DependentUpon>202603110811146_CreateCarImageMappings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

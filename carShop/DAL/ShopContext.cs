@@ -16,6 +16,7 @@ namespace carShop.DAL
         public DbSet<Car> Cars { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CarImage> CarImages { get; set; }
+        public DbSet<CarImageMapping> CarImageMappings { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

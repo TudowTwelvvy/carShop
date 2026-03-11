@@ -31,9 +31,11 @@ namespace carShop.Models
             ErrorMessage = "The price must be a number up to two decimals")]
         public decimal Price { get; set; }
         public int? CategoryID { get; set; } //Represents the ID of the category that the product is assigned to: FOREIGN KEY-CODE
-        public virtual Category Category { get; set; }
+        public virtual Category Category { get; set; } 
         // Image Property
         public string ImagePath { get; set; }
+
+        public virtual ICollection<CarImageMapping> CarImageMappings { get; set; }
 
     }
 }
