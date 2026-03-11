@@ -12,6 +12,6 @@ namespace carShop
         public const string CarImagePath = "~/Content/CarImages/";
         public const string CarThumbnailPath = "~/Content/CarImages/Thumbnails/";
         public const int PageItems = 3;
-
+        public const int NumberOfCarImages = 5;
     }
 }

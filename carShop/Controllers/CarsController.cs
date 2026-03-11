@@ -103,8 +103,16 @@ namespace carShop.Controllers
         // GET: Cars/Create
         public ActionResult Create()
         {
-            ViewBag.CategoryID = new SelectList(db.Categories, "ID", "Name");
-            return View();
+            CarViewModel viewModel = new CarViewModel();
+            viewModel.CategoryList = new SelectList(db.Categories, "ID", "Name");
+            viewModel.ImageLists = new List<SelectList>();
+
+            for(int i = 0; i<Constants.NumberOfCarImages; i++)
+            {
+                viewModel.ImageLists.Add(new SelectList(db.CarImages, "ID", "FileName"));
+            }
+            
+            return View(viewModel);
         }
 
         // POST: Cars/Create
