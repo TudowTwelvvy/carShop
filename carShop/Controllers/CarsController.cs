@@ -118,27 +118,40 @@ namespace carShop.Controllers
         // POST: Cars/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Description,Price,CategoryID")] Car car, HttpPostedFileBase ImageFile)
+        public ActionResult Create(CarViewModel viewModel)
         {
+            Car car = new Car();
+            car.Name = viewModel.Name;
+            car.Description = viewModel.Description;
+            car.Price = viewModel.Price;
+            car.CategoryID = viewModel.CategoryID;
+            car.CarImageMappings= new List<CarImageMapping>();
+
+            //get a list of selected images without any blanks
+            string[] carImages = viewModel.CarImages.Where(carIm =>
+            !string.IsNullOrEmpty(carIm)).ToArray();
+            for (int i = 0; i < carImages.Length; i++)
+            {
+                car.CarImageMappings.Add(new CarImageMapping
+                {
+                    CarImage = db.CarImages.Find(int.Parse(carImages[i])),
+                    ImageNumber = i
+                });
+            }
             if (ModelState.IsValid)
             {
-                //image
-                if (ImageFile != null && ImageFile.ContentLength > 0)
-                {
-                    string fileName = Guid.NewGuid() + Path.GetExtension(ImageFile.FileName);
-                    string path = Path.Combine(Server.MapPath("~/Images/"), fileName);
-
-                    ImageFile.SaveAs(path);
-                    car.ImagePath = fileName;
-                }
-
                 db.Cars.Add(car);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.CategoryID = new SelectList(db.Categories, "ID", "Name", car.CategoryID);
-            return View(car);
+            viewModel.CategoryList = new SelectList(db.Categories, "ID", "Name", car.CategoryID);
+            viewModel.ImageLists = new List<SelectList>();
+            for (int i = 0; i < Constants.NumberOfCarImages; i++)
+            {
+                viewModel.ImageLists.Add(new SelectList(db.CarImages, "ID", "FileName",
+                viewModel.CarImages[i]));
+            }
+            return View(viewModel);
         }
 
         // GET: Cars/Edit/5
