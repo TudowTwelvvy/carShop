@@ -166,7 +166,28 @@ namespace carShop.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CategoryID = new SelectList(db.Categories, "ID", "Name", car.CategoryID);
+
+            CarViewModel viewModel = new CarViewModel();
+            viewModel.CategoryList = new SelectList(db.Categories, "ID", "Name", car.CategoryID);
+            viewModel.ImageLists = new List<SelectList>();
+
+            foreach(var imageMapping in car.CarImageMappings.OrderBy(cim => cim.ImageNumber))
+            {
+                viewModel.ImageLists.Add(new SelectList(db.CarImages, "ID", "FileName",
+                imageMapping.CarImageID));
+            }
+
+            for( int i = viewModel.ImageLists.Count; i < Constants.NumberOfCarImages; i++)
+            {
+                viewModel.ImageLists.Add(new SelectList(db.CarImages, "ID", "FileName"));
+            }
+
+            viewModel.ID = car.ID;
+            viewModel.Name = car.Name;
+            viewModel.Description = car.Description;
+            viewModel.Price = car.Price;
+
+            //ViewBag.CategoryID = new SelectList(db.Categories, "ID", "Name", car.CategoryID);
             return View(car);
         }
 
