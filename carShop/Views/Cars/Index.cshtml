@@ -46,11 +46,12 @@
             <tr>
                 <!-- IMAGE -->
                 <td>
-                    @if (!string.IsNullOrEmpty(item.ImagePath))
+                    @if (item.CarImageMappings != null && item.CarImageMappings.Any())
                     {
-                        <img src="~/Images/@item.ImagePath"
-                             width="100" height="70"
-                             class="img-thumbnail" />
+                        <a href="@Url.Action("Details", new { id = item.ID})">
+                            <img src="@(Url.Content(Constants.CarImagePath) +
+                            item.CarImageMappings.OrderBy(cim => cim.ImageNumber).ElementAt(0).CarImage.FileName)">
+                        </a>
                     }
                     else
                     {

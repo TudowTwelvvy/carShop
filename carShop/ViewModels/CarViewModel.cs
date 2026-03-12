@@ -20,7 +20,7 @@ namespace carShop.ViewModels
        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
         [Required(ErrorMessage = "The price cannot be blank")]
-        [Range(0.10, 10000, ErrorMessage = "Please enter a price between 0.10 and 10000.00")]
+   
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:c}")]
         [RegularExpression("[0-9]+(\\.[0-9][0-9]?)?", ErrorMessage = "The price must be a number up to two decimal places")]

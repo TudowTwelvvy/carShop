@@ -13,22 +13,21 @@
 
     <dl class="dl-horizontal">
 
-        <!-- IMAGE -->
-        <dt>Image</dt>
-        <dd>
-            @if (!string.IsNullOrEmpty(Model.ImagePath))
-            {
-                <img src="~/Images/@Model.ImagePath"
-                     width="250"
-                     height="160"
-                     class="img-thumbnail" />
-            }
-            else
-            {
-                <span>No Image Available</span>
-            }
-        </dd>
-
+        <!-- IMAGE
+    <dt>Image</dt>
+    <dd>
+        @if (!string.IsNullOrEmpty(Model.ImagePath))
+        {
+            <img src="~/Images/@Model.ImagePath"
+                 width="250"
+                 height="160"
+                 class="img-thumbnail" />
+        }
+        else
+        {
+            <span>No Image Available</span>
+        }
+    </dd>-->
         <!-- CATEGORY -->
         <dt>Category</dt>
         <dd>
@@ -58,6 +57,25 @@
         <dd>
             @String.Format(new System.Globalization.CultureInfo("en-ZA"), "{0:C}", Model.Price)
         </dd>
+
+        @if(Model.CarImageMappings!= null && Model.CarImageMappings.Any())
+        {
+          <dt></dt>
+          <dd>
+              <img src="@(Url.Content(Constants.CarImagePath) + Model.CarImageMappings.OrderBy(cim =>cim.ImageNumber).ElementAt(0).CarImage.FileName)"
+                   style=padding:5px>
+          </dd>
+          <dt></dt>
+          <dd>
+              @foreach (var item in Model.CarImageMappings.OrderBy(cim =>
+              cim.ImageNumber))
+              {
+                  <a href="@(Url.Content(Constants.CarImagePath) + item.CarImage.FileName)">
+                      <img src="@(Url.Content(Constants.CarThumbnailPath) + item.CarImage.FileName)" style=padding:5px>
+                  </a>
+              }
+          </dd>
+        }
 
     </dl>
 </div>

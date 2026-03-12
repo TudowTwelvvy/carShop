@@ -24,7 +24,6 @@ namespace carShop.Models
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Please enter the price of the product.")]
-        [Range(0.01, 10000000, ErrorMessage = "Please enter a price between 0.01 and 1,000,000.")]
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:C}")]
         [RegularExpression("[0-9]+(\\.[0-9][0-9]?)?", 
