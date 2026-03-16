@@ -188,15 +188,15 @@ namespace carShop.Controllers
             viewModel.Price = car.Price;
 
             //ViewBag.CategoryID = new SelectList(db.Categories, "ID", "Name", car.CategoryID);
-            return View(car);
+            return View(viewModel);
         }
 
         // POST: Cars/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Description,Price,CategoryID")] Car car, HttpPostedFileBase ImageFile)
+        public ActionResult Edit(CarViewModel viewModel)
         {
-            if (ModelState.IsValid)
+           /* if (ModelState.IsValid)
             {
                 var carInDb = db.Cars.Find(car.ID);
 
@@ -244,8 +244,65 @@ namespace carShop.Controllers
             if (car == null)
             {
                 return HttpNotFound();
+            }*/
+           var carToUpdate = db.Cars.Include(c => c.CarImageMappings).Where(c => c.ID == viewModel.ID).Single();
+
+            if(TryUpdateModel(carToUpdate, "", new string[] { "Name", "Description", "Price", "CategoryID" }))
+            {
+                if (carToUpdate.CarImageMappings == null)
+                {
+                    carToUpdate.CarImageMappings = new List<CarImageMapping>();
+                }
+                //get a list of selected images without any blanks
+                string[] carImages = viewModel.CarImages.Where(carIm => !string.IsNullOrEmpty(carIm)).ToArray();
+
+                for (int i= 0; i < carImages.Length; i++)
+                {
+                    //get the image currently stored
+                    var imageMappingToEdit = carToUpdate.CarImageMappings.Where(cim => cim.ImageNumber == i).FirstOrDefault();
+                    //find the new image
+                    var image = db.CarImages.Find(int.Parse(carImages[i]));
+                    if(imageMappingToEdit != null)
+                    {
+                        //add image to the imagemappings
+                        carToUpdate.CarImageMappings.Add(new CarImageMapping
+                        {
+                    
+                            ImageNumber = i,
+                            CarImage = image,
+                            CarImageID = image.ID
+                        });
+                    }
+                    else
+                    {
+                        //if they are the same
+                        if(imageMappingToEdit.CarImageID != int.Parse(carImages[i]))
+                        {
+                            //assign umage property of the image mapping
+                            imageMappingToEdit.CarImage = image;
+
+                        }
+                    }
+                }
+                //delete any other imagemappings that the user did not include in their
+                //selections for the product
+                for(int i = carImages.Length; i < Constants.NumberOfCarImages; i++)
+                {
+                    var imageMappingToDelete = carToUpdate.CarImageMappings.Where(cim => cim.ImageNumber == i).FirstOrDefault();
+                    //if there is something stored in the mapping
+                    if(imageMappingToDelete != null)
+                    {
+                        //delete the record from the mapping table directly.
+                        //just calling productToUpdate.ProductImageMappings.Remove(imageMappingToEdit)
+                        //results in a FK error
+                        db.CarImageMappings.Remove(imageMappingToDelete);
+                    }
+                }
+                db.SaveChanges();
+                return RedirectToAction("Index");
+
             }
-            return View(car);
+            return View(viewModel);
         }
 
         // POST: Cars/Delete/5
