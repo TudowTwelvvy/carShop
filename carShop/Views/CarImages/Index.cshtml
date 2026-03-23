@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<carShop.Models.CarImage>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Images";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
     @Html.ActionLink("Upload New Image", "Upload")
@@ -14,7 +14,8 @@
         <th>
             @Html.DisplayNameFor(model => model.FileName)
         </th>
-        <th></th>
+        <th>Image</th>
+        <th>Action</th>
     </tr>
 
 @foreach (var item in Model) {
@@ -23,9 +24,15 @@
             @Html.DisplayFor(modelItem => item.FileName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @if (!string.IsNullOrWhiteSpace(item.FileName))
+            {
+                <img src="@Url.Content(Constants.CarImagePath + item.FileName)" alt="Car Image" style="max-width: 200px; max-height: 200px;" />
+            }
+        </td>
+        <td>
+           
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID }) 
+            
         </td>
     </tr>
 }

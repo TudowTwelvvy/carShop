@@ -267,10 +267,9 @@
     <Content Include="Views\Categories\Index.cshtml" />
     <Content Include="Views\CarImages\Upload.cshtml" />
     <Content Include="Views\CarImages\Delete.cshtml" />
-    <Content Include="Views\CarImages\Details.cshtml" />
-    <Content Include="Views\CarImages\Edit.cshtml" />
     <Content Include="Views\CarImages\Index.cshtml" />
     <Content Include="Views\Error\FileUploadLimitExceeded.cshtml" />
+    <Content Include="Views\Shared\_CarEditCreatePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

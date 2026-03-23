@@ -29,7 +29,7 @@ namespace carShop.Controllers
         }
 
         // GET: CarImages/Details/5
-        public ActionResult Details(int? id)
+        /*public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -41,7 +41,7 @@ namespace carShop.Controllers
                 return HttpNotFound();
             }
             return View(carImage);
-        }
+        }*/
 
         // GET: CarImages/Create
         public ActionResult Upload()
@@ -209,7 +209,7 @@ namespace carShop.Controllers
         }
 
         // GET: CarImages/Edit/5
-        public ActionResult Edit(int? id)
+        /*public ActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -221,12 +221,12 @@ namespace carShop.Controllers
                 return HttpNotFound();
             }
             return View(carImage);
-        }
+        }*/
 
         // POST: CarImages/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,FileName")] CarImage carImage)
         {
@@ -237,7 +237,7 @@ namespace carShop.Controllers
                 return RedirectToAction("Index");
             }
             return View(carImage);
-        }
+        }*/
 
         // GET: CarImages/Delete/5
         public ActionResult Delete(int? id)
@@ -260,6 +260,27 @@ namespace carShop.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CarImage carImage = db.CarImages.Find(id);
+            //find all the mappings for this image
+            var mappings = carImage.CarImageMappings.Where(m => m.CarImageID == id);
+            foreach(var mapping in mappings)
+            {
+                //find all mappings for any product containing this image
+                var mappingsToUpdate = db.CarImageMappings.Where(m => m.CarID == mapping.CarID);
+                //for each image in each product change its imagenumber to one lower if it is higher 
+                //than the current image 
+                foreach(var mappingToUpdate in mappingsToUpdate)
+                {
+                    if(mappingToUpdate.ImageNumber > mapping.ImageNumber)
+                    {
+                        mappingToUpdate.ImageNumber -= 1;
+                        
+                    }
+                }
+            }
+
+            System.IO.File.Delete(Request
+                .MapPath(Constants.CarImagePath + carImage.FileName));
+            System.IO.File.Delete(Request.MapPath(Constants.CarThumbnailPath + carImage.FileName));
             db.CarImages.Remove(carImage);
             db.SaveChanges();
             return RedirectToAction("Index");

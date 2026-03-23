@@ -262,7 +262,7 @@ namespace carShop.Controllers
                     var imageMappingToEdit = carToUpdate.CarImageMappings.Where(cim => cim.ImageNumber == i).FirstOrDefault();
                     //find the new image
                     var image = db.CarImages.Find(int.Parse(carImages[i]));
-                    if(imageMappingToEdit != null)
+                    if(imageMappingToEdit == null)
                     {
                         //add image to the imagemappings
                         carToUpdate.CarImageMappings.Add(new CarImageMapping
